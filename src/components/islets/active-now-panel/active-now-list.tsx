@@ -38,7 +38,7 @@ export default function ActiveNowList() {
       {filteredList.map((friend) => (
         <TooltipProvider key={friend.id}>
           <Tooltip>
-            <TooltipTrigger className="w-full">
+            <TooltipTrigger asChild>
               <ListItem
                 noVerticalPadding
                 className="group  gap-3 border-[1px] border-gray-800  bg-midground p-4"
