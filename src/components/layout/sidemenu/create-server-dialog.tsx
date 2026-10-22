@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import ServerIconPicker from "@/components/islets/server-icon-picker";
 import { ListedServer, ServerChannel } from "@/lib/entities/server";
 import { useServerStore } from "@/state/server-list";
 import { useRouter } from "next/navigation";
@@ -53,7 +54,7 @@ export default function CreateServerDialog({
     const server: ListedServer = {
       id,
       name: serverName,
-      photo: photo.trim() || `https://picsum.photos/seed/${id}/64/64`,
+      photo: photo.trim(),
       channels,
     };
 
@@ -85,15 +86,7 @@ export default function CreateServerDialog({
               onChange={(event) => setName(event.target.value)}
             />
           </label>
-          <label className="flex flex-col gap-1 text-xs font-semibold uppercase text-gray-400">
-            Image URL (optional)
-            <Input
-              className="mt-1 text-sm normal-case text-gray-100"
-              placeholder="https://example.com/icon.png"
-              value={photo}
-              onChange={(event) => setPhoto(event.target.value)}
-            />
-          </label>
+          <ServerIconPicker name={name} photo={photo} onChange={setPhoto} />
           <label className="flex flex-col gap-1 text-xs font-semibold uppercase text-gray-400">
             Channels (comma separated)
             <Input

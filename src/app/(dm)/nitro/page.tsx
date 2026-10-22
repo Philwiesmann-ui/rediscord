@@ -1,4 +1,5 @@
 import { Page, PageContent, PageHeader } from "@/components/layout/page";
+import NitroView from "@/components/islets/nitro-view";
 import { BsStars } from "react-icons/bs";
 
 export const dynamic = "error";
@@ -14,7 +15,9 @@ export default function NitroPage() {
           </div>
         </div>
       </PageHeader>
-      <PageContent>Looks like nothing by here yet</PageContent>
+      <PageContent>
+        <NitroView />
+      </PageContent>
     </Page>
   );
 }

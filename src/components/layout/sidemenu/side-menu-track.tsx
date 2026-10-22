@@ -26,12 +26,22 @@ const ServerMenuItem = ({
       notificationCount={server.messages}
       tooltipContent={<div className="font-semibold">{server.name}</div>}
       className="mx-auto my-2"
-      image={{
-        url: server.photo,
-        alt: server.name,
-      }}
+      image={
+        server.photo
+          ? {
+              url: server.photo,
+              alt: server.name,
+            }
+          : undefined
+      }
       {...props}
-    />
+    >
+      {!server.photo && (
+        <span className="text-base font-semibold text-gray-200">
+          {server.name.charAt(0).toUpperCase()}
+        </span>
+      )}
+    </SideMenuItem>
   );
 };
 

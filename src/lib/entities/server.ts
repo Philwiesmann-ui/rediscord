@@ -9,4 +9,5 @@ export type ListedServer = {
   photo: string;
   messages?: number;
   channels?: ServerChannel[];
+  boosts?: number;
 };

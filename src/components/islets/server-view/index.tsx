@@ -1,6 +1,8 @@
 "use client";
 import { Page, PageContent, PageHeader } from "@/components/layout/page";
 import { ChatDM } from "@/components/islets/dm-chat";
+import ServerBoost from "@/components/islets/server-boost";
+import ServerIconDialog from "@/components/islets/server-icon-dialog";
 import Avatar from "@/components/ui/avatar";
 import Divider from "@/components/ui/divider";
 import { Input } from "@/components/ui/input";
@@ -16,7 +18,7 @@ import {
   AiOutlineFileText,
   AiOutlineGif,
 } from "react-icons/ai";
-import { BsHash } from "react-icons/bs";
+import { BsHash, BsPencilSquare } from "react-icons/bs";
 import { CgSmileMouthOpen } from "react-icons/cg";
 
 interface Message {
@@ -34,6 +36,7 @@ export default function ServerView({ id }: { id: string }) {
   );
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [newMessage, setNewMessage] = React.useState("");
+  const [iconOpen, setIconOpen] = React.useState(false);
 
   if (servers === null) {
     return (
@@ -92,10 +95,20 @@ export default function ServerView({ id }: { id: string }) {
         <div className="flex flex-none items-center gap-3 text-sm font-semibold">
           <Avatar size="sm" src={server.photo} alt={server.name} />
           {server.name}
+          <button
+            type="button"
+            onClick={() => setIconOpen(true)}
+            title="Change server icon"
+            aria-label="Change server icon"
+            className="text-gray-500 transition-colors hover:text-gray-200"
+          >
+            <BsPencilSquare fontSize={16} />
+          </button>
         </div>
       </PageHeader>
       <PageContent className="flex-col gap-4 pt-4 lg:flex-row">
         <div className="flex w-full flex-none flex-col lg:w-56">
+          <ServerBoost server={server} />
           <p className="mb-2 text-xs font-semibold uppercase text-gray-400">
             Text Channels
           </p>
@@ -181,6 +194,11 @@ export default function ServerView({ id }: { id: string }) {
           )}
         </div>
       </PageContent>
+      <ServerIconDialog
+        server={server}
+        open={iconOpen}
+        onOpenChange={setIconOpen}
+      />
     </Page>
   );
 }

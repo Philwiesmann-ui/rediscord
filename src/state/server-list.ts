@@ -28,6 +28,7 @@ type ServerStore = {
   servers: ListedServer[] | null;
   setServers: (servers: ListedServer[]) => void;
   addServer: (server: ListedServer) => void;
+  updateServer: (id: string, patch: Partial<ListedServer>) => void;
 };
 
 export const useServerStore = create<ServerStore>((set) => ({
@@ -36,6 +37,14 @@ export const useServerStore = create<ServerStore>((set) => ({
   addServer: (server) =>
     set(({ servers }) => {
       const nextServers = [...(servers ?? []), server];
+      writeStoredServers(nextServers);
+      return { servers: nextServers };
+    }),
+  updateServer: (id, patch) =>
+    set(({ servers }) => {
+      const nextServers = (servers ?? []).map((server) =>
+        server.id === id ? { ...server, ...patch } : server,
+      );
       writeStoredServers(nextServers);
       return { servers: nextServers };
     }),
