@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import StatusBadge from "@/components/ui/badge/status-badge";
 import Divider from "@/components/ui/divider";
 import { ListItem } from "@/components/ui/list";
@@ -11,14 +12,13 @@ interface UserStatusProps {
 function UserStatus({ statuses, handleSubmit, setOpen }: UserStatusProps) {
   return (
     <div className="leading-[16px]">
-      {statuses.map((status, index) => (
-        <>
+      {statuses.map((status) => (
+        <Fragment key={status.value}>
           <ListItem
             onClick={() => {
               setOpen(false), handleSubmit(status.value);
             }}
             className="group my-1 min-w-[180px] max-w-[380px] flex-col  !items-start !rounded text-gray-300 hover:!bg-primary"
-            key={index}
           >
             <div className="flex items-center">
               <StatusBadge
@@ -47,7 +47,7 @@ function UserStatus({ statuses, handleSubmit, setOpen }: UserStatusProps) {
               status.value === "online" ? "block" : "hidden"
             } `}
           />
-        </>
+        </Fragment>
       ))}
     </div>
   );
