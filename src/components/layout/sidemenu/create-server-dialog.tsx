@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import ServerIconPicker from "@/components/islets/server-icon-picker";
 import { ListedServer, ServerChannel } from "@/lib/entities/server";
+import { createDefaultRoles } from "@/lib/utils/permissions";
 import { useServerStore } from "@/state/server-list";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -56,6 +57,7 @@ export default function CreateServerDialog({
       name: serverName,
       photo: photo.trim(),
       channels,
+      roles: createDefaultRoles(id),
     };
 
     addServer(server);

@@ -1,3 +1,4 @@
+"use client";
 import Avatar from "@/components/ui/avatar";
 import Button from "@/components/ui/button/button";
 import {
@@ -15,6 +16,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { User } from "@/lib/entities/user";
+import { useSessionStore } from "@/state/session";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { BsFillCheckCircleFill, BsThreeDots } from "react-icons/bs";
@@ -30,6 +33,14 @@ function PopoverContentSub({
   hoverPopover,
   currentUser,
 }: PopoverContentSubProps) {
+  const signOut = useSessionStore((state) => state.signOut);
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    signOut();
+    router.push("/login");
+  };
+
   return (
     <div
       onMouseOver={() => {
@@ -101,14 +112,21 @@ function PopoverContentSub({
                       <BsThreeDots className=" text-xl hover:text-gray-200" />
                     </PopoverTrigger>
                     <PopoverContent className="!w-24 border-none bg-background !p-1.5">
-                      <ListItem className=" !rounded font-medium leading-[18px] text-red-500 hover:bg-red-500 hover:text-white">
+                      <ListItem
+                        onClick={handleSignOut}
+                        className=" !rounded font-medium leading-[18px] text-red-500 hover:bg-red-500 hover:text-white"
+                      >
                         Logout
                       </ListItem>
                     </PopoverContent>
                   </Popover>
                 </div>
                 <div className="w-full text-center">
-                  <Button bg={false} className="mx-auto ">
+                  <Button
+                    bg={false}
+                    className="mx-auto "
+                    onClick={() => router.push("/login")}
+                  >
                     Add Account
                   </Button>
                 </div>

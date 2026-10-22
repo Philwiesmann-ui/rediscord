@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import Avatar from "@/components/ui/avatar";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
@@ -6,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { VoiceStatus } from "@/lib/entities/user";
 import { t } from "@/lib/i18n";
 import { generateFakeCurrentUser } from "@/lib/utils/mock";
+import { sessionToUser, useHydrateSession } from "@/state/session";
 import { useCurrentUserStore } from "@/state/user";
 import { useState, useEffect } from "react";
 import VoiceControls from "./voice-status-controls";
@@ -13,15 +13,16 @@ import PopoverContentMain from "./voice-status-popover-content-main";
 
 export default function VoiceStatusFooter() {
   const [voiceStatus, setVoiceStatus] = useState<VoiceStatus>({ mute: true });
-  const currentUserData = generateFakeCurrentUser();
   const { currentUser, setCurrentUser } = useCurrentUserStore();
+  const session = useHydrateSession();
 
+  /* The signed in account takes over the footer, otherwise the demo account. */
   useEffect(() => {
-    if (currentUserData !== null) {
-      setCurrentUser(currentUserData);
+    if (session === undefined) {
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setCurrentUser(session ? sessionToUser(session) : generateFakeCurrentUser());
+  }, [session, setCurrentUser]);
 
   return (
     <>

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-import CommonLayout from "@/components/layout/common-layout";
-import DemoBanner from "@/components/layout/demo-banner";
 import "./globals.css";
 
 const mainFont = Open_Sans({
@@ -19,11 +17,7 @@ export default function RootLayout({
 }: React.PropsWithChildren) {
   return (
     <html lang="en">
-      <body className={mainFont.className + " dark"}>
-        <DemoBanner />
-        <CommonLayout />
-        {children}
-      </body>
+      <body className={mainFont.className + " dark"}>{children}</body>
     </html>
   );
 }

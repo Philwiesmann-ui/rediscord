@@ -3,6 +3,7 @@ import { Page, PageContent, PageHeader } from "@/components/layout/page";
 import { ChatDM } from "@/components/islets/dm-chat";
 import ServerBoost from "@/components/islets/server-boost";
 import ServerIconDialog from "@/components/islets/server-icon-dialog";
+import ServerSettingsDialog from "@/components/islets/server-settings-dialog";
 import Avatar from "@/components/ui/avatar";
 import Divider from "@/components/ui/divider";
 import { Input } from "@/components/ui/input";
@@ -18,7 +19,7 @@ import {
   AiOutlineFileText,
   AiOutlineGif,
 } from "react-icons/ai";
-import { BsHash, BsPencilSquare } from "react-icons/bs";
+import { BsGear, BsHash, BsPencilSquare } from "react-icons/bs";
 import { CgSmileMouthOpen } from "react-icons/cg";
 
 interface Message {
@@ -37,6 +38,7 @@ export default function ServerView({ id }: { id: string }) {
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [newMessage, setNewMessage] = React.useState("");
   const [iconOpen, setIconOpen] = React.useState(false);
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
 
   if (servers === null) {
     return (
@@ -103,6 +105,15 @@ export default function ServerView({ id }: { id: string }) {
             className="text-gray-500 transition-colors hover:text-gray-200"
           >
             <BsPencilSquare fontSize={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setSettingsOpen(true)}
+            title="Server settings"
+            aria-label="Open server settings"
+            className="text-gray-500 transition-colors hover:text-gray-200"
+          >
+            <BsGear fontSize={16} />
           </button>
         </div>
       </PageHeader>
@@ -198,6 +209,11 @@ export default function ServerView({ id }: { id: string }) {
         server={server}
         open={iconOpen}
         onOpenChange={setIconOpen}
+      />
+      <ServerSettingsDialog
+        server={server}
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
       />
     </Page>
   );
