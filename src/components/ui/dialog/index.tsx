@@ -109,15 +109,24 @@ const DialogTitle = React.forwardRef<
 ));
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
+/*
+ * Rendered on a div instead of the paragraph Radix uses by default: the
+ * descriptions in this app hold block content (paragraphs, pickers), which is
+ * invalid inside a <p> and makes React report a hydration error.
+ */
 const DialogDescription = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
+  HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={clsx("text-muted-foreground text-sm", className)}
-    {...props}
-  />
+>(({ className, children, ...props }, ref) => (
+  <DialogPrimitive.Description asChild>
+    <div
+      ref={ref}
+      className={clsx("text-muted-foreground text-sm", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  </DialogPrimitive.Description>
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 

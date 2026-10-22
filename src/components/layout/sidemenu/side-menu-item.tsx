@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import Link from "next/link";
+import HybridButton from "@/components/ui/hybrid/hybrid-button";
 import React from "react";
 
 type SideMenuItemProps = {
@@ -18,7 +18,11 @@ type SideMenuItemProps = {
     url: string;
     alt: string;
   };
-} & React.ComponentPropsWithoutRef<typeof Link>;
+  children?: React.ReactNode;
+  className?: string;
+  href?: string;
+  onClick?: () => void;
+};
 
 const SideTip = ({ isActive }: { isActive?: boolean }) => (
   <div
@@ -46,7 +50,7 @@ export default function SideMenuItem({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Link
+        <HybridButton
           className={clsx(
             "group relative block h-12 w-12 bg-foreground bg-cover transition-all hover:shadow-xl",
             "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
@@ -74,7 +78,7 @@ export default function SideMenuItem({
             />
           )}
           {children}
-        </Link>
+        </HybridButton>
       </TooltipTrigger>
       <TooltipContent side="right" sideOffset={15} className="text-sm">
         {tooltipContent}

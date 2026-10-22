@@ -70,7 +70,7 @@ function PopoverContentSub({
           </ListItem>
           <Divider className="my-2 h-[1px] w-full" />
           <Dialog>
-            <DialogTrigger className="w-full">
+            <DialogTrigger asChild>
               <ListItem className=" items-center justify-between  !rounded py-3 text-[12px] leading-[16px] text-white hover:!bg-primary">
                 account management
               </ListItem>

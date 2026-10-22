@@ -3,13 +3,12 @@ import React, { useState } from "react";
 import { ListedServer } from "@/lib/entities/server";
 import SideMenuItem from "./side-menu-item";
 import { clsx } from "@/lib/utils";
-import { BsDiscord } from "react-icons/bs";
+import { BsDiscord, BsPlus } from "react-icons/bs";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Divider from "@/components/ui/divider";
-
-type SideMenuTrackProps = {
-  servers: ListedServer[];
-};
+import { useHydrateServers } from "@/state/server-list";
+import { usePathname } from "next/navigation";
+import CreateServerDialog from "./create-server-dialog";
 
 type ServerMenuItemProps = {
   server: ListedServer;
@@ -36,8 +35,14 @@ const ServerMenuItem = ({
   );
 };
 
-export default function SideMenuTrack({ servers }: SideMenuTrackProps) {
-  const [active, setActive] = useState<string>("default");
+export default function SideMenuTrack() {
+  const servers = useHydrateServers();
+  const pathname = usePathname();
+  const [createOpen, setCreateOpen] = useState(false);
+
+  const activeServer = servers?.find(
+    (server) => pathname === `/servers/${server.id}`,
+  );
 
   return (
     <>
@@ -47,14 +52,12 @@ export default function SideMenuTrack({ servers }: SideMenuTrackProps) {
         */}
         <SideMenuItem
           href="/channels/me"
-          onClick={() => setActive("default")}
           tooltipContent={<div className="font-semibold">Direct messages</div>}
-          notificationCount={432}
           className={clsx(
             "mx-auto mb-2 flex items-center justify-center bg-foreground",
-            active === "default" ? "bg-primary text-white" : "text-gray-300",
+            !activeServer ? "bg-primary text-white" : "text-gray-300",
           )}
-          isActive={active === "default"}
+          isActive={!activeServer}
         >
           <BsDiscord fontSize={26} />
         </SideMenuItem>
@@ -62,20 +65,29 @@ export default function SideMenuTrack({ servers }: SideMenuTrackProps) {
         <Divider className="w-8" />
 
         {/*
-          List of servers
+          List of servers created in the preview
         */}
         {servers?.map((server) => (
           <ServerMenuItem
-            href={`/channels/${server.id}`}
+            href={`/servers/${server.id}`}
             key={server.id}
             server={server}
-            isActive={active === server.id}
-            onClick={() => {
-              setActive(server.id);
-            }}
+            isActive={activeServer?.id === server.id}
           />
         ))}
+
+        {/*
+          Create a server
+        */}
+        <SideMenuItem
+          onClick={() => setCreateOpen(true)}
+          tooltipContent={<div className="font-semibold">Add a server</div>}
+          className="mx-auto my-2 flex items-center justify-center bg-foreground text-green-500 hover:text-white"
+        >
+          <BsPlus fontSize={26} />
+        </SideMenuItem>
       </TooltipProvider>
+      <CreateServerDialog open={createOpen} onOpenChange={setCreateOpen} />
     </>
   );
 }
